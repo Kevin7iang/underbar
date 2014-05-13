@@ -92,10 +92,18 @@ var _ = {};
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    return _.filter(collection, function(x) {return !test(x)});
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    var resultArray = [];
+    _.each(array, function(x) {
+      if (_.indexOf(resultArray, x) === -1) {
+        resultArray.push(x);
+      }
+    });
+    return resultArray;
   };
 
 
@@ -104,6 +112,11 @@ var _ = {};
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    var resultArray = [];
+      _.each(collection, function(x) {
+        resultArray.push(iterator(x));
+      });
+    return resultArray;
   };
 
   /*
