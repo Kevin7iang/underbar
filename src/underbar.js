@@ -196,8 +196,8 @@ var _ = {};
     if (iterator === undefined) {
       var iterator = _.identity;
     }
-    return _.reduce(collection, function(truthTest, x) {
-      if (truthTest === false) {
+    return _.reduce(collection, function(test, x) {
+      if (test === false) {
         return false;
       }
       if (iterator(x)){
@@ -213,6 +213,20 @@ var _ = {};
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    if (iterator === undefined) {
+      var iterator = _.identity;
+    }
+    return _.reduce(collection, function(test, x) {
+      if (test === true) {
+        return true;
+      }
+      if (iterator(x)){
+        return true;
+      }
+      else {
+        return false;
+      }
+    }, false);
   };
 
 
@@ -235,6 +249,15 @@ var _ = {};
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    var resultObj = obj;
+    if (1 < arguments.length) {
+      for (var i = 1; i < arguments.length; i++) {
+        for (var x in arguments[i]) {
+          resultObj[x] = arguments[i][x];
+        }
+      }
+    }
+    return resultObj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
