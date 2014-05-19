@@ -263,6 +263,17 @@ var _ = {};
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var resultObj = obj;
+    if (1 < arguments.length) {
+      for (var i = 1; i < arguments.length; i++) {
+        for (var x in arguments[i]) {
+          if (resultObj[x] === undefined) {
+            resultObj[x] = arguments[i][x];
+          }
+        }
+      }
+    }
+    return resultObj;
   };
 
 
@@ -304,6 +315,7 @@ var _ = {};
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -313,6 +325,13 @@ var _ = {};
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var argsArray = [];
+    for (var i = 2; i < arguments.length; i++) {
+      argsArray.push(arguments[i]);
+    }
+    setTimeout(function() {
+      func.apply(this, argsArray);
+    }, wait);
   };
 
 
@@ -327,6 +346,13 @@ var _ = {};
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var arrayCopy = array.slice();
+    var result = [];
+    for (var i = arrayCopy.length-1; -1 < i; i--) {
+      var random = Math.round(Math.random()*i);
+      result.push(arrayCopy.splice(random,1)[0]);
+    }
+    return result;
   };
 
 
